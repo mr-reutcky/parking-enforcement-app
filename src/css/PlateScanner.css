@@ -1,40 +1,46 @@
-/* Base layout and reset */
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  background: black;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-}
-
-/* Main app container */
-#root {
+.scanner-container {
   position: relative;
+  height: 100vh;
   overflow: hidden;
 }
 
-/* Portrait 9:16 canvas (mobile vertical view) */
-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  display: block;
-  aspect-ratio: 9 / 16;
-  height: 100vh;
-  width: auto;
-  max-width: 100vw;
-  background: #fff;
-  z-index: 1;
+.scanner-canvas {
+  width: 100%;
+  height: 66vh;
 }
 
-/* Hide video stream */
-video {
-  display: none;
+.plate-list {
+  position: absolute;
+  bottom: 0;
+  height: 34vh;
+  width: 100%;
+  overflow-y: auto;
+  background-color: #111;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.plate-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plate-list-item {
+  padding: 10px;
+  margin-bottom: 6px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  color: white;
+}
+
+.valid-plate {
+  background-color: #00AF85;
+}
+
+.invalid-plate {
+  background-color: #FF4D4D;
 }
 
 /* Plate Guide Box */
