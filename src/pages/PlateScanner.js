@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import PlateList from "../components/PlateList";
 import PlateGuideBox from "../components/PlateGuideBox";
+import { Link } from "react-router-dom";
 import "../css/PlateScanner.css";
 
 function PlateScanner() {
@@ -230,6 +231,9 @@ function PlateScanner() {
 
   return (
     <div className="scanner-container">
+      <Link to="/end" className="end-scan-button">
+        End Scan
+      </Link>
       <video
         ref={videoRef}
         style={{ display: "none" }}
