@@ -70,7 +70,7 @@
   /* Prevent inner scroll content from touching bottom edge */
   padding-bottom: 8px;
 
-  transition: all 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out;
 }
 
 /* Scrollbar styling */
