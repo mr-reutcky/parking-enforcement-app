@@ -14,11 +14,12 @@ function PlateScanner() {
   const frameCounter = useRef(0);
   const lastApiCallTimeRef = useRef(0);
 
+  // Sync these with the PlateGuideBox props
+  const GUIDE_WIDTH = 200;
+  const GUIDE_HEIGHT = 100;
+  const MARGIN = 20;
   const cooldownPeriod = 3000;
   const coolDownFrames = 15;
-  const GUIDE_WIDTH = 300;
-  const GUIDE_HEIGHT = 150;
-  const MARGIN = 20;
 
   const processFrame = () => {
     try {
@@ -228,9 +229,16 @@ function PlateScanner() {
         muted
         autoPlay
       />
-      <canvas ref={canvasRef} width={720} height={1280} className="scanner-canvas" />
+      <div className="canvas-wrapper">
+        <canvas
+          ref={canvasRef}
+          width={720}
+          height={1280}
+          className="scanner-canvas"
+        />
+        <PlateGuideBox width={GUIDE_WIDTH} height={GUIDE_HEIGHT} />
+      </div>
       <PlateList plates={scannedPlates} />
-      <PlateGuideBox width={200} height={100} />
     </div>
   );
 }
