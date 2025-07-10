@@ -1,7 +1,12 @@
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <></>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/scanner" element={<ScannerPage />} />
+      {/* <Route path="/submit" element={<SubmitPage />} /> */}
+    </Routes>
   );
 }
 
