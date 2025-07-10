@@ -14,7 +14,6 @@ function PlateScanner() {
   const frameCounter = useRef(0);
   const lastApiCallTimeRef = useRef(0);
 
-  // Sync these with the PlateGuideBox props
   const GUIDE_WIDTH = 200;
   const GUIDE_HEIGHT = 100;
   const MARGIN = 20;
@@ -83,7 +82,7 @@ function PlateScanner() {
       }
 
       if (candidates.length > 0) {
-        candidates.sort((a, b) => b.width * b.height - a.width * a.height);
+        candidates.sort((a, b) => b.width * b.height - a.width * b.height);
         const rectToCrop = candidates[0];
 
         const globalRect = {
@@ -131,17 +130,26 @@ function PlateScanner() {
           const dataURL = cropCanvas.toDataURL("image/jpeg");
 
           axios
-            .post("https://example.com/api/detect-plate", { image: dataURL })
+            .post("http://localhost:8080/api/detect-plate", { image: dataURL })
             .then((res) => {
               const plate = res.data.plate;
               const isAuthorized = res.data.isAuthorized;
+              const owner = res.data.owner || "Unknown";
+
               if (plate) {
-                setScannedPlates((prev) => [
-                  { text: plate, valid: isAuthorized },
-                  ...prev,
-                ]);
+                setScannedPlates((prev) => {
+                  const alreadyScanned = prev.some(p => p.text === plate);
+                  if (alreadyScanned) return prev;
+
+                  return [
+                    { text: plate, valid: isAuthorized, owner: owner },
+                    ...prev,
+                  ];
+                });
+
                 boxColorRef.current = isAuthorized ? "green" : "red";
               }
+
               setTimeout(() => {
                 boxColorRef.current = "lightblue";
               }, 3000);
@@ -149,7 +157,7 @@ function PlateScanner() {
             .catch((err) => {
               console.error("API error:", err);
               setScannedPlates((prev) => [
-                { text: "API error", valid: false },
+                { text: "API error", valid: false, owner: "N/A" },
                 ...prev,
               ]);
               boxColorRef.current = "red";
