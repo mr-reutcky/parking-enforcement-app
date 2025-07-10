@@ -33,15 +33,19 @@
   bottom: 0;
   left: 5px;
   right: 5px;
-  margin-bottom: 10px;
-  max-height: 35vh;
+
+  max-height: 33svh;
   background-color: #f7f7f7;
   padding: 16px;
   box-sizing: border-box;
-  border-radius: 16px;
+
+  border-radius: 16px 16px 0 0;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
   z-index: 3;
+
+  /* Prevent inner scroll content from touching bottom edge */
+  padding-bottom: 8px;
 }
 
 /* Scrollbar styling */
