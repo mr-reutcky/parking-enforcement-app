@@ -8,9 +8,9 @@ function PlateScanner() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  // UI and detection state
-  const [status, setStatus] = useState("Ready to start camera");
-  const [detectedText, setDetectedText] = useState("");
+  // // UI and detection state
+  // const [status, setStatus] = useState("Ready to start camera");
+  // const [detectedText, setDetectedText] = useState("");
   const [cameraStarted, setCameraStarted] = useState(false);
 
   // Color of the bounding box (for visual feedback)
@@ -123,7 +123,7 @@ function PlateScanner() {
         ctx.lineWidth = 4;
         ctx.strokeRect(globalRect.x, globalRect.y, globalRect.width, globalRect.height);
 
-        setStatus("Possible plate detected");
+        // setStatus("Possible plate detected");
         frameCounter.current++;
 
         const now = Date.now();
@@ -170,10 +170,10 @@ function PlateScanner() {
               const plate = res.data.plate;
 
               if (plate) {
-                setDetectedText(plate);         // Show result
+                // setDetectedText(plate);         // Show result
                 boxColorRef.current = "green";  // Green box = successful read
               } else {
-                setDetectedText("No text detected");
+                // setDetectedText("No text detected");
                 boxColorRef.current = "red";    // Red box = OCR failed
               }
 
@@ -184,7 +184,7 @@ function PlateScanner() {
             })
             .catch((err) => {
               console.error("API error:", err);
-              setDetectedText("API error");
+              // setDetectedText("API error");
               boxColorRef.current = "red";
               setTimeout(() => {
                 boxColorRef.current = "lightblue";
@@ -193,7 +193,7 @@ function PlateScanner() {
         }
       } else {
         // No valid candidates found this frame
-        setStatus("No plate detected");
+        // setStatus("No plate detected");
         frameCounter.current = 0;
       }
 
@@ -229,10 +229,10 @@ function PlateScanner() {
       // Start processing frames after slight delay
       setTimeout(() => processFrame(), 500);
       setCameraStarted(true);
-      setStatus("No plate detected");
+      // setStatus("No plate detected");
     } catch (err) {
       console.error("Error accessing camera", err);
-      setStatus("Camera error");
+      // setStatus("Camera error");
     }
   };
 
