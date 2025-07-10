@@ -1,9 +1,32 @@
+import React from "react";
+import { Link } from "react-router-dom";
+
 function Home() {
   return (
-    <div>
-      <h1>Welcome to the Parking Enforcement App</h1>
-      <p>Please use the navigation to access different features.</p>
-      <a href="/scanner">Go to Scanner Page</a>
+    <div
+      style={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#111",
+      }}
+    >
+      <Link
+        to="/scanner"
+        style={{
+          padding: "20px 40px",
+          fontSize: "20px",
+          fontWeight: "bold",
+          textDecoration: "none",
+          borderRadius: "8px",
+          backgroundColor: "#007bff",
+          color: "white",
+          cursor: "pointer",
+        }}
+      >
+        Start Scanning
+      </Link>
     </div>
   );
 }

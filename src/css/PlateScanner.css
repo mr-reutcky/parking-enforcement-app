@@ -1,0 +1,124 @@
+.scanner-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Wrap the canvas + guide box together */
+.canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 66vh;
+}
+
+/* Full-width camera feed fills top 2/3 of screen */
+.scanner-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+/* Plate guide now centers within camera area only */
+.plate-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.plate-list {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40vh;
+  overflow-y: auto;
+  background-color: #f7f7f7;
+  padding: 16px;
+  box-sizing: border-box;
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 5;
+}
+
+.plate-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.plate-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+.plate-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plate-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: white;
+  color: black;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+}
+
+.plate-number {
+  font-weight: bold;
+}
+
+.plate-number.valid {
+  color: #00AF85;
+}
+
+.plate-number.invalid {
+  color: #FF4D4D;
+}
+
+.plate-owner {
+  font-size: 16px;
+}
+
+.empty-plate-message {
+  text-align: center;
+  color: #888;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Plate Guide Corners */
+.corner {
+  position: absolute;
+  background-color: #00AF85;
+}
+
+.corner.horizontal {
+  height: 2px;
+  width: 20px;
+}
+
+.corner.vertical {
+  width: 2px;
+  height: 20px;
+}
+
+.top-left.horizontal { top: 0; left: 0; }
+.top-left.vertical   { top: 0; left: 0; }
+
+.top-right.horizontal { top: 0; right: 0; }
+.top-right.vertical   { top: 0; right: 0; }
+
+.bottom-left.horizontal { bottom: 0; left: 0; }
+.bottom-left.vertical   { bottom: 0; left: 0; }
+
+.bottom-right.horizontal { bottom: 0; right: 0; }
+.bottom-right.vertical   { bottom: 0; right: 0; }
