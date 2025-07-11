@@ -17,7 +17,8 @@ function Details() {
   function formatDate(dateStr) {
     if (!dateStr) return "N/A";
 
-    const date = new Date(dateStr);
+    const date = new Date(dateStr + ":00");
+    
     return date.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
