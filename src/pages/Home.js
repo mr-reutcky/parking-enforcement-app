@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/home.css";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("scannedPlates");
+  }, []);
 
   return (
     <div className="home-page">

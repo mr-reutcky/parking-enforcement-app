@@ -21,6 +21,20 @@ function PlateScanner() {
   const cooldownPeriod = 3000;
   const coolDownFrames = 15;
 
+  useEffect(() => {
+    // Load from localStorage on mount
+    const saved = localStorage.getItem("scannedPlates");
+    if (saved) {
+      setScannedPlates(JSON.parse(saved));
+    }
+    checkReady();
+  }, []);
+
+  useEffect(() => {
+    // Save to localStorage on change
+    localStorage.setItem("scannedPlates", JSON.stringify(scannedPlates));
+  }, [scannedPlates]);
+
   const processFrame = () => {
     try {
       const video = videoRef.current;
@@ -184,8 +198,6 @@ function PlateScanner() {
   };
 
   const startCamera = async () => {
-    console.log("startCamera() called");
-
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
@@ -198,8 +210,6 @@ function PlateScanner() {
 
       videoRef.current.srcObject = stream;
       await videoRef.current.play();
-      console.log("Camera stream started");
-
       setTimeout(() => processFrame(), 500);
     } catch (err) {
       console.error("Error accessing camera", err);
@@ -207,47 +217,25 @@ function PlateScanner() {
   };
 
   const checkReady = () => {
-    console.log("Checking OpenCV readiness...");
     if (window.cv) {
       if (window.cv.Mat) {
-        console.log("OpenCV is ready");
         startCamera();
       } else {
-        console.log("Waiting for OpenCV runtime");
         window.cv["onRuntimeInitialized"] = () => {
-          console.log("OpenCV runtime initialized");
           startCamera();
         };
       }
     } else {
-      console.log("cv not found, retrying...");
       setTimeout(checkReady, 100);
     }
   };
 
-  useEffect(() => {
-    checkReady();
-  }, []);
-
   return (
     <div className="scanner-container">
-      <Link to="/end" className="end-scan-button">
-        End Scan
-      </Link>
-      <video
-        ref={videoRef}
-        style={{ display: "none" }}
-        playsInline
-        muted
-        autoPlay
-      />
+      <Link to="/end" className="end-scan-button">End Scan</Link>
+      <video ref={videoRef} style={{ display: "none" }} playsInline muted autoPlay />
       <div className="canvas-wrapper">
-        <canvas
-          ref={canvasRef}
-          width={720}
-          height={1280}
-          className="scanner-canvas"
-        />
+        <canvas ref={canvasRef} width={720} height={1280} className="scanner-canvas" />
         <PlateGuideBox width={GUIDE_WIDTH} height={GUIDE_HEIGHT} />
       </div>
       <PlateList plates={scannedPlates} />
