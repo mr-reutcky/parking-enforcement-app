@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import ScannerPage from "./pages/ScannerPage";
 
 function App() {
   return (
