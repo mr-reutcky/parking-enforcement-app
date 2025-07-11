@@ -104,6 +104,33 @@
   font-weight: 500;
 }
 
+.plate-action-button {
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  background-color: #00AF85;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.plate-action-button:hover {
+  background-color: #17bb94;
+}
+
+/* Red style for 'New Report' */
+.plate-action-button.report {
+  background-color: #ff4d4d;
+}
+
+.plate-action-button.report:hover {
+  background-color: #d93838;
+}
+
+
+
 .plate-number {
   font-weight: bold;
 }

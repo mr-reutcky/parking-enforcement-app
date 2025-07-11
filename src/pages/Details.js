@@ -1,0 +1,70 @@
+import React, { useEffect, useState } from "react";
+import { useLocation, Link } from "react-router-dom";
+import axios from "axios";
+import "../css/Details.css";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
+function Details() {
+  const query = useQuery();
+  const plate = query.get("plate");
+  const [permit, setPermit] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isAuthorized, setIsAuthorized] = useState(null);
+
+  useEffect(() => {
+    if (!plate) return;
+
+    axios
+      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", { plate })
+      .then((res) => {
+        setPermit(res.data.permit);
+        setIsAuthorized(res.data.isAuthorized);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading plate info:", err);
+        setLoading(false);
+      });
+  }, [plate]);
+
+  if (!plate) {
+    return (
+      <div className="details-container">
+        <h1>No plate provided</h1>
+        <Link to="/scanner" className="back-button">Back to Scanner</Link>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="details-container">
+        <h1>Loading details...</h1>
+      </div>
+    );
+  }
+
+  return (
+    <div className="details-container">
+      <h1>Plate Details</h1>
+      <div className="plate-details-card">
+        <div className="row"><span className="label">Plate:</span> {permit?.plate || "Unknown"}</div>
+        <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
+        <div className="row"><span className="label">Start:</span> {permit?.permit_start || "N/A"}</div>
+        <div className="row"><span className="label">End:</span> {permit?.permit_end || "N/A"}</div>
+        <div className="row"><span className="label">Status:</span> 
+          <span className={isAuthorized ? "status valid" : "status invalid"}>
+            {isAuthorized ? "Valid" : "Expired / Invalid"}
+          </span>
+        </div>
+      </div>
+
+      <Link to="/scanner" className="back-button">Back to Scanner</Link>
+    </div>
+  );
+}
+
+export default Details;
