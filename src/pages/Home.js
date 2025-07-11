@@ -1,34 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "../css/home.css";
 
-function Home() {
+const Home = () => {
+  const navigate = useNavigate();
+
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#111",
-      }}
-    >
-      <Link
-        to="/scanner"
-        style={{
-          padding: "20px 40px",
-          fontSize: "20px",
-          fontWeight: "bold",
-          textDecoration: "none",
-          borderRadius: "8px",
-          backgroundColor: "#007bff",
-          color: "white",
-          cursor: "pointer",
-        }}
-      >
-        Start Scanning
-      </Link>
+    <div className="home-page">
+      <header className="home-header">
+        <h1 className="gryd-logo">
+          <span className="gryd-bold">Gryd</span><span className="gryd-green">Park</span>
+        </h1>
+      </header>
+
+      <main className="home-main">
+        <div className="main-content">
+          <p className="guide-text">Tap below to start scanning license plates.</p>
+          <button className="start-button" onClick={() => navigate("/scanner")}>
+            Start Scanning
+          </button>
+        </div>
+      </main>
     </div>
   );
-}
+};
 
 export default Home;
