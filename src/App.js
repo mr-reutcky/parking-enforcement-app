@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import PlateScanner from "./pages/PlateScanner";
 
+
 function App() {
   return (
     <Routes>
