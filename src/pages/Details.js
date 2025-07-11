@@ -5,18 +5,6 @@ import "../css/Details.css";
 import { motion } from "framer-motion";
 import { pageAnimation } from "../components/pageAnimations";
 
-function Details() {
-  return (
-    <motion.div
-      className="details-container"
-      {...pageAnimation}
-    >
-      {/* Page content */}
-    </motion.div>
-  );
-}
-
-
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
