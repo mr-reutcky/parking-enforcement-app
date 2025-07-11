@@ -14,6 +14,21 @@ function Details() {
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(null);
 
+  function formatDate(dateStr) {
+    if (!dateStr) return "N/A";
+
+    const date = new Date(dateStr);
+    return date.toLocaleString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+
+
   useEffect(() => {
     if (!plate) return;
 
@@ -53,8 +68,8 @@ function Details() {
       <div className="plate-details-card">
         <div className="row"><span className="label">Plate:</span> {permit?.plate || "Unknown"}</div>
         <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
-        <div className="row"><span className="label">Start:</span> {permit?.permit_start || "N/A"}</div>
-        <div className="row"><span className="label">End:</span> {permit?.permit_end || "N/A"}</div>
+        <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
+        <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
         <div className="row"><span className="label">Status:</span> 
           <span className={isAuthorized ? "status valid" : "status invalid"}>
             {isAuthorized ? "Valid" : "Expired / Invalid"}
