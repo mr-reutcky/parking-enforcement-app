@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/home.css";
+import { motion } from "framer-motion";
+import { pageAnimation } from "../components/pageAnimations";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -10,7 +12,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home-page">
+    <motion.div className="home-page" {...pageAnimation}>
       <header className="home-header">
         <h1 className="gryd-logo">
           <span className="gryd-bold">Gryd</span><span className="gryd-green">Park</span>
@@ -25,7 +27,7 @@ const Home = () => {
           </button>
         </div>
       </main>
-    </div>
+    </motion.div>
   );
 };
 

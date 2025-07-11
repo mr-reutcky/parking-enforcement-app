@@ -5,6 +5,8 @@ import PlateList from "../components/PlateList";
 import PlateGuideBox from "../components/PlateGuideBox";
 import { Link } from "react-router-dom";
 import "../css/PlateScanner.css";
+import { motion } from "framer-motion";
+import { pageAnimation } from "../components/pageAnimations";
 
 function PlateScanner() {
   const videoRef = useRef(null);
@@ -231,7 +233,7 @@ function PlateScanner() {
   };
 
   return (
-    <div className="scanner-container">
+    <motion.div className="scanner-container" {...pageAnimation}>
       <Link to="/end" className="end-scan-button">End Scan</Link>
       <video ref={videoRef} style={{ display: "none" }} playsInline muted autoPlay />
       <div className="canvas-wrapper">
@@ -239,7 +241,7 @@ function PlateScanner() {
         <PlateGuideBox width={GUIDE_WIDTH} height={GUIDE_HEIGHT} />
       </div>
       <PlateList plates={scannedPlates} />
-    </div>
+    </motion.div>
   );
 }
 

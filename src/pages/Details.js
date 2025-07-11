@@ -2,6 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import axios from "axios";
 import "../css/Details.css";
+import { motion } from "framer-motion";
+import { pageAnimation } from "../components/pageAnimations";
+
+function Details() {
+  return (
+    <motion.div
+      className="details-container"
+      {...pageAnimation}
+    >
+      {/* Page content */}
+    </motion.div>
+  );
+}
+
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -18,7 +32,7 @@ function Details() {
     if (!dateStr) return "N/A";
 
     const date = new Date(dateStr + ":00");
-    
+
     return date.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
@@ -48,10 +62,10 @@ function Details() {
 
   if (!plate) {
     return (
-      <div className="details-container">
+      <motion.div className="details-container" {...pageAnimation}>
         <h1>No plate provided</h1>
         <Link to="/scanner" className="back-button">Back to Scanner</Link>
-      </div>
+      </motion.div>
     );
   }
 
@@ -64,7 +78,7 @@ function Details() {
   }
 
   return (
-    <div className="details-container">
+    <motion.div className="details-container" {...pageAnimation}>
       <h1>Plate Details</h1>
       <div className="plate-details-card">
         <div className="row"><span className="label">Plate:</span> {permit?.plate || "Unknown"}</div>
@@ -79,7 +93,7 @@ function Details() {
       </div>
 
       <Link to="/scanner" className="back-button">Back to Scanner</Link>
-    </div>
+    </motion.div>
   );
 }
 
