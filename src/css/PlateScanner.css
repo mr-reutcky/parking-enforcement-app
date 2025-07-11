@@ -1,0 +1,157 @@
+.end-scan-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  background-color: #00AF85;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s ease;
+}
+
+.end-scan-button:hover {
+  background-color: #17bb94;
+}
+
+/* Full-screen scanner container */
+.scanner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  background: black;
+}
+
+/* Canvas fills the entire screen */
+.scanner-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Guide box centered over the canvas */
+.plate-guide {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Plate list overlaying the bottom */
+.plate-list {
+  position: absolute;
+  bottom: 0;
+  left: 5px;
+  right: 5px;
+
+  max-height: 33svh;
+  background-color: #f7f7f7;
+  padding: 16px;
+  box-sizing: border-box;
+
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  z-index: 3;
+
+  /* Prevent inner scroll content from touching bottom edge */
+  padding-bottom: 8px;
+
+  transition: height 0.3s ease-in-out;
+}
+
+/* Scrollbar styling */
+.plate-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.plate-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 3px;
+}
+
+/* List container */
+.plate-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Each list item (plate entry) */
+.plate-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  color: black;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  font-weight: 500;
+}
+
+.plate-number {
+  font-weight: bold;
+}
+
+.plate-number.valid {
+  color: #00AF85;
+}
+
+.plate-number.invalid {
+  color: #FF4D4D;
+}
+
+.plate-owner {
+  font-size: 16px;
+  color: #333;
+}
+
+.empty-plate-message {
+  text-align: center;
+  color: #888;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+/* Plate Guide Corners */
+.corner {
+  position: absolute;
+  background-color: #00AF85;
+}
+
+.corner.horizontal {
+  height: 2px;
+  width: 20px;
+}
+
+.corner.vertical {
+  width: 2px;
+  height: 20px;
+}
+
+.top-left.horizontal { top: 0; left: 0; }
+.top-left.vertical   { top: 0; left: 0; }
+
+.top-right.horizontal { top: 0; right: 0; }
+.top-right.vertical   { top: 0; right: 0; }
+
+.bottom-left.horizontal { bottom: 0; left: 0; }
+.bottom-left.vertical   { bottom: 0; left: 0; }
+
+.bottom-right.horizontal { bottom: 0; right: 0; }
+.bottom-right.vertical   { bottom: 0; right: 0; }
