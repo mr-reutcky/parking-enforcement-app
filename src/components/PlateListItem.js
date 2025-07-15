@@ -13,7 +13,7 @@ function PlateListItem({ plate }) {
       <span className={plateClass}>{plate.text}</span>
       <Link
         className={buttonClass}
-        to={`$/details?plate=${encodeURIComponent(plate.text)}`}
+        to={`/details?plate=${encodeURIComponent(plate.text)}`}
       >
         View Details
       </Link>
