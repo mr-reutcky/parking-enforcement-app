@@ -18,9 +18,7 @@ function Details() {
 
   function formatDate(dateStr) {
     if (!dateStr) return "N/A";
-
     const date = new Date(dateStr + ":00");
-
     return date.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
@@ -31,12 +29,13 @@ function Details() {
     });
   }
 
-
   useEffect(() => {
     if (!plate) return;
 
     axios
-      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", { plate }, { headers: {"x-app-client": "lpr-client"} })
+      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", { plate }, {
+        headers: { "x-app-client": "lpr-client" }
+      })
       .then((res) => {
         setPermit(res.data.permit);
         setIsAuthorized(res.data.isAuthorized);
@@ -79,6 +78,12 @@ function Details() {
           </span>
         </div>
       </div>
+
+      {!isAuthorized && (
+        <Link to={`/report?plate=${plate}`} className="report-button">
+          Create Report
+        </Link>
+      )}
 
       <Link to="/scanner" className="back-button">Back to Scanner</Link>
     </motion.div>
