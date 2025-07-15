@@ -84,19 +84,22 @@ h1 {
 
 
 .report-button {
-  padding: 6px 12px;
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
   font-size: 14px;
   font-weight: 600;
-  border: none;
-  border-radius: 6px;
+  text-align: center;
   background-color: #ff4d4d;
   color: white;
+  border: none;
+  border-radius: 6px;
   text-decoration: none;
   transition: background-color 0.2s ease;
-  display: inline-block;
-  margin-top: 12px;
 }
 
 .report-button:hover {
   background-color: #ff1a1a;
 }
+

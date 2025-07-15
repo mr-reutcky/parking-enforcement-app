@@ -69,7 +69,11 @@ function Details() {
       <h1>Plate Details</h1>
         <div className="plate-details-card">
           <div className="row"><span className="label">Plate:</span> {plate}</div>
+          <div className="row"><span className="label">Spot Number:</span> {permit?.spot || "N/A"}</div>
           <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
+          <div className="row"><span className="label">Make:</span> {permit?.make || "N/A"}</div>
+          <div className="row"><span className="label">Model:</span> {permit?.model || "N/A"}</div>
+          <div className="row"><span className="label">Color:</span> {permit?.color || "N/A"}</div>
           <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
           <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
           <div className="row"><span className="label">Status:</span> 
