@@ -36,7 +36,7 @@ function Details() {
     if (!plate) return;
 
     axios
-      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", { plate })
+      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", { plate }, { headers: {"x-app-client": "lpr-client"} })
       .then((res) => {
         setPermit(res.data.permit);
         setIsAuthorized(res.data.isAuthorized);
