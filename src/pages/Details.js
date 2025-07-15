@@ -67,24 +67,25 @@ function Details() {
   return (
     <motion.div className="details-container" {...pageAnimation}>
       <h1>Plate Details</h1>
-      <div className="plate-details-card">
-        <div className="row"><span className="label">Plate:</span> {permit?.plate || "Unknown"}</div>
-        <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
-        <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
-        <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
-        <div className="row"><span className="label">Status:</span> 
-          <span className={isAuthorized ? "status valid" : "status invalid"}>
-            {isAuthorized ? "Valid" : "Expired / Invalid"}
-          </span>
+        <div className="plate-details-card">
+          <div className="row"><span className="label">Plate:</span> {plate}</div>
+          <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
+          <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
+          <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
+          <div className="row"><span className="label">Status:</span> 
+            <span className={isAuthorized ? "status valid" : "status invalid"}>
+              {isAuthorized ? "Valid" : "Expired / Invalid"}
+            </span>
+          </div>
+
+          {!isAuthorized && (
+            <div className="row">
+              <Link to={`/report?plate=${plate}`} className="report-button">
+                Create Report
+              </Link>
+            </div>
+          )}
         </div>
-      </div>
-
-      {!isAuthorized && (
-        <Link to={`/report?plate=${plate}`} className="report-button">
-          Create Report
-        </Link>
-      )}
-
       <Link to="/scanner" className="back-button">Back to Scanner</Link>
     </motion.div>
   );
