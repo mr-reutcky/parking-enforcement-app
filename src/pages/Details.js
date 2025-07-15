@@ -68,15 +68,15 @@ function Details() {
     <motion.div className="details-container" {...pageAnimation}>
       <h1>Plate Details</h1>
         <div className="plate-details-card">
-          <div className="row"><span className="label">Plate:</span> {plate}</div>
-          <div className="row"><span className="label">Spot Number:</span> {permit?.spot || "N/A"}</div>
-          <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
-          <div className="row"><span className="label">Make:</span> {permit?.make || "N/A"}</div>
-          <div className="row"><span className="label">Model:</span> {permit?.model || "N/A"}</div>
-          <div className="row"><span className="label">Color:</span> {permit?.color || "N/A"}</div>
-          <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
-          <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
-          <div className="row"><span className="label">Status:</span> 
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Plate:</span> {plate}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Spot Number:</span> {permit?.spot || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Make:</span> {permit?.make || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Model:</span> {permit?.model || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Color:</span> {permit?.color || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
+          <div className="row" style={{ fontSize: "16px" }}><span className="label">Status:</span> 
             <span className={isAuthorized ? "status valid" : "status invalid"}>
               {isAuthorized ? "Valid" : "Expired / Invalid"}
             </span>
