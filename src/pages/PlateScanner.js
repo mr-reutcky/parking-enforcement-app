@@ -147,7 +147,7 @@ function PlateScanner() {
           const dataURL = cropCanvas.toDataURL("image/jpeg");
 
           axios
-            .post("https://parking-enforcement-server.onrender.com/api/detect-plate", { image: dataURL })
+            .post("https://parking-enforcement-server.onrender.com/api/detect-plate", { image: dataURL }, { headers: {"x-app-client": "lpr-client"} })
             .then((res) => {
               const plate = res.data.plate;
               const isAuthorized = res.data.isAuthorized;

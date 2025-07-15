@@ -3,12 +3,21 @@ import { useNavigate } from "react-router-dom";
 import "../css/home.css";
 import { motion } from "framer-motion";
 import { pageAnimation } from "../components/pageAnimations";
+import axios from "axios";
 
 const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.removeItem("scannedPlates");
+    // Spin up the server
+    axios .get("https://parking-enforcement-server.onrender.com/", { headers: {"x-app-client": "lpr-client"} })
+      .then((response) => {
+        console.log("Server is running:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error checking server health:", error);
+      });
   }, []);
 
   return (
