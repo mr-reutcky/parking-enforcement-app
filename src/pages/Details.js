@@ -89,6 +89,7 @@ function Details() {
               </Link>
             </div>
           )}
+          
         </div>
       <Link to="/scanner" className="back-button">Back to Scanner</Link>
     </motion.div>
