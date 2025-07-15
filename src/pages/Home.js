@@ -11,7 +11,7 @@ const Home = () => {
   useEffect(() => {
     localStorage.removeItem("scannedPlates");
     // Spin up the server
-    axios .get("https://parking-enforcement-server.onrender.com/", { headers: {"x-app-client": "lpr-client"} })
+    axios.get("https://parking-enforcement-server.onrender.com/", { headers: {"x-app-client": "lpr-client"} })
       .then((response) => {
         console.log("Server is running:", response.data);
       })
