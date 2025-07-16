@@ -69,7 +69,11 @@ function ValidPlatesList() {
             </Link>
           ))
         ) : (
-          <div className="no-results">No valid plates found.</div>
+          <div className="no-results">
+            <h2>No bookings found</h2>
+            <p>We can't find any active</p>
+            <p>Bookings matching your search</p>
+          </div>
         )}
       </div>
 
