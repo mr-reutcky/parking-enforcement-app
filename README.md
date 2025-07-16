@@ -102,7 +102,6 @@ VITE_API_BASE_URL=https://parking-enforcement-server.onrender.com
 
 ## Code Structure
 
-```
 src/
 ├── components/         # Reusable UI components (PlateGuideBox, PlateList)
 ├── css/                # Stylesheets for each page and feature
@@ -111,7 +110,6 @@ src/
 ├── App.jsx             # App routes & page transitions
 ├── index.jsx           # App root with BrowserRouter basename
 └── setupOpenCV.js      # Handles runtime initialization for OpenCV.js
-```
 
 ---
 
