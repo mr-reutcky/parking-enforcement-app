@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import "../css/PlateList.css";
+import { motion } from "framer-motion";
+import { pageAnimation } from "../components/pageAnimations";
 
 function ValidPlatesList() {
   const [plates, setPlates] = useState([]);
@@ -28,7 +30,7 @@ function ValidPlatesList() {
   );
 
   return (
-    <div className="list-page">
+    <motion.div className="list-page" {...pageAnimation}>
       <div className="top-bar">
         <h1 className="title">78 Radcliffe Rd</h1>
         <Link to="/scanner" className="camera-btn">Use Camera</Link>
@@ -76,7 +78,7 @@ function ValidPlatesList() {
       </div>
 
       <button className="add-btn">+</button>
-    </div>
+    </motion.div>
   );
 }
 
