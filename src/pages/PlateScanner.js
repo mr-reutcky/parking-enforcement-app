@@ -241,6 +241,7 @@ function PlateScanner() {
         <PlateGuideBox width={GUIDE_WIDTH} height={GUIDE_HEIGHT} />
       </div>
       <PlateList plates={scannedPlates} />
+      <button className="add-btn">+</button>
     </motion.div>
   );
 }
