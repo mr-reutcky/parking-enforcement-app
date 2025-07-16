@@ -5,6 +5,25 @@ import "../css/PlateList.css";
 import { motion } from "framer-motion";
 import { pageAnimation } from "../components/pageAnimations";
 
+function formatEndTime(endTimeStr) {
+  const end = new Date(endTimeStr);
+  const now = new Date();
+
+  const isToday =
+    end.getFullYear() === now.getFullYear() &&
+    end.getMonth() === now.getMonth() &&
+    end.getDate() === now.getDate();
+
+  return isToday
+    ? end.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+    : end.toLocaleString([], {
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+      });
+}
+
 function ValidPlatesList() {
   const [plates, setPlates] = useState([]);
   const [search, setSearch] = useState("");
@@ -64,7 +83,7 @@ function ValidPlatesList() {
               <div className="plate-row">
                 <span>{plate.spot}</span>
                 <span>{plate.plate}</span>
-                <span>{new Date(plate.permit_end).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</span>
+                <span>{formatEndTime(plate.permit_end)}</span>
               </div>
             </Link>
           ))

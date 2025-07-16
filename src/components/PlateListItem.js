@@ -11,7 +11,6 @@ function PlateListItem({ plate }) {
 
   return (
     <li className="plate-list-item">
-      <span className="plate-spot">{plate.spot}</span>
       <span className={plateClass}>{plate.text}</span>
       <Link
         className={buttonClass}
