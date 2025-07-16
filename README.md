@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# Parking Enforcement App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React-based mobile-friendly Progressive Web App (PWA) designed for real-time license plate scanning and permit validation. It features an AR-style camera overlay using OpenCV.js, backend integration for plate detection and permit status fetching, and intuitive UI flows for scanning, reviewing, and reporting.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Features](#features)  
+- [Getting Started](#getting-started)  
+  - [Prerequisites](#prerequisites)  
+  - [Installation](#installation)  
+  - [Running Locally](#running-locally)  
+- [App Architecture](#app-architecture)  
+  - [Core Pages & Components](#core-pages--components)  
+  - [Scanning Flow & Tech Stack](#scanning-flow--tech-stack)  
+- [API & Configuration](#api--configuration)  
+- [Code Structure](#code-structure)  
+- [Development Notes](#development-notes)  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- Real-time license plate scanning using OpenCV.js with on-device edge detection  
+- AR-style overlay helps users align plates in live video  
+- Automatic optical character recognition (OCR) via backend  
+- Displays plate validity using permit data (Valid / Expired / Invalid)  
+- Detailed permit view with parking spot and time information  
+- Scanned plates list persistently stored via `localStorage`  
+- Searchable permit list for manual lookup  
+- "Create Report" action if the plate doesn't have a valid permit  
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- [Node.js](https://nodejs.org/) v18+  
+- npm (bundled with Node.js) or Yarn  
+- HTTPS/SSL context to allow camera access (e.g., `localhost`)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Installation
 
-### `npm run eject`
+```bash
+git clone https://github.com/mr-reutcky/parking-enforcement-app.git
+cd parking-enforcement-app
+npm install
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Running Locally
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Visit `https://localhost:3000/` (or `http://localhost:3000/` on desktop)  
+- Grant camera permissions and follow the onboarding flow
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+## App Architecture
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Core Pages & Components
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Page / Component         | Description |
+|--------------------------|-------------|
+| `Home`                   | Landing page with “Start Scanning” button |
+| `PieceScanner`           | AR scan mode; live camera, overlay, detection + API call |
+| `List`                   | Searchable list of valid active permits |
+| `Details`                | Shows permit detail; allows reporting invalid plates |
+| `PlateGuideBox`          | Overlay component that draws corner guides |
+| `PlateList` / `PlateListItem` | UI for listing scanned plates with validity labels |
 
-### Code Splitting
+### Scanning Flow & Tech Stack
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. OpenCV.js: edge detection → contour detection → plate detection  
+2. Cooldown logic: limits API calls by frames & time  
+3. Backend OCR: cropping largest candidate → `POST /detect-plate`  
+4. State update: drives UI list, color-coded validity, and data persistence  
+5. UX overlay: Framer Motion controls animations for polished transitions  
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## API & Configuration
 
-### Making a Progressive Web App
+Built to work with your backend hosted at `https://parking-enforcement-server.onrender.com`, exposing:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- `GET /` – Health check / warmup  
+- `GET /api/permits` – Returns JSON list of all permits  
+- `POST /api/lookup-plate` – Finds permit by plate parameter  
+- `POST /api/detect-plate` – Accepts `{ image: base64 }`, returns `{ plate, isAuthorized, owner }`
 
-### Advanced Configuration
+Note: For production, replace hard-coded URLs with an environment-specific config or `.env` file, e.g.:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```env
+VITE_API_BASE_URL=https://parking-enforcement-server.onrender.com
+```
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Code Structure
 
-### `npm run build` fails to minify
+```
+src/
+├── components/         # Reusable UI components (PlateGuideBox, PlateList)
+├── css/                # Stylesheets for each page and feature
+├── pages/              # Routeable pages (Home, Scanner, List, Details)
+├── components/         # Animation presets & utilities
+├── App.jsx             # App routes & page transitions
+├── index.jsx           # App root with BrowserRouter basename
+└── setupOpenCV.js      # Handles runtime initialization for OpenCV.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## Development Notes
+
+- LocalStorage usage: Scanned plate history is persisted and survives reloads  
+- Camera feed: Hidden `<video>` is drawn into `<canvas>` for overlays + processing  
+- Cooldown controls: `coolDownFrames`, `cooldownPeriod`, `frameCounter`, etc.  
+- Color feedback: Detection bounding box flashes green/red depending on validity  
