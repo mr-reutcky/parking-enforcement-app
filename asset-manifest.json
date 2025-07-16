@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/parking-enforcement-app/static/css/main.ad31310f.css",
-    "main.js": "/parking-enforcement-app/static/js/main.9b558be7.js",
+    "main.css": "/parking-enforcement-app/static/css/main.70cf3796.css",
+    "main.js": "/parking-enforcement-app/static/js/main.9521fc78.js",
     "index.html": "/parking-enforcement-app/index.html",
-    "main.ad31310f.css.map": "/parking-enforcement-app/static/css/main.ad31310f.css.map",
-    "main.9b558be7.js.map": "/parking-enforcement-app/static/js/main.9b558be7.js.map"
+    "main.70cf3796.css.map": "/parking-enforcement-app/static/css/main.70cf3796.css.map",
+    "main.9521fc78.js.map": "/parking-enforcement-app/static/js/main.9521fc78.js.map"
   },
   "entrypoints": [
-    "static/css/main.ad31310f.css",
-    "static/js/main.9b558be7.js"
+    "static/css/main.70cf3796.css",
+    "static/js/main.9521fc78.js"
   ]
 }
