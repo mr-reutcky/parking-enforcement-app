@@ -30,7 +30,7 @@ function ValidPlatesList() {
   return (
     <div className="list-page">
       <div className="top-bar">
-        <h1 className="title">Valid Plates</h1>
+        <h1 className="title">78 Radcliffe Rd</h1>
         <Link to="/scanner" className="camera-btn">Use Camera</Link>
       </div>
 

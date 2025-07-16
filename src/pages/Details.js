@@ -92,7 +92,7 @@ function Details() {
           )}
           
         </div>
-      <Link onClick={() => navigate(-1)} className="back-button">Back to Scan</Link>
+      <button onClick={() => navigate(-1)} className="back-button">Back to Scan</button>
     </motion.div>
   );
 }
