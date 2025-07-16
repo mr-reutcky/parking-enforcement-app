@@ -101,3 +101,8 @@
   justify-content: center;
   z-index: 100;
 }
+
+.plate-row-link {
+  text-decoration: none;
+  color: inherit;
+}

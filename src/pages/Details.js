@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/Details.css";
 import { motion } from "framer-motion";
@@ -15,6 +15,7 @@ function Details() {
   const [permit, setPermit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(null);
+  const navigate = useNavigate();
 
   function formatDate(dateStr) {
     if (!dateStr) return "N/A";
@@ -91,7 +92,7 @@ function Details() {
           )}
           
         </div>
-      <Link to="/scanner" className="back-button">Back to Scanner</Link>
+      <Link onClick={() => navigate(-1)} className="back-button">Back to Scan</Link>
     </motion.div>
   );
 }
