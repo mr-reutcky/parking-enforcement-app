@@ -31,7 +31,7 @@ const Home = () => {
       <main className="home-main">
         <div className="main-content">
           <p className="guide-text">Tap below to start scanning license plates.</p>
-          <button className="start-button" onClick={() => navigate("/scanner")}>
+          <button className="start-button" onClick={() => navigate("/list")}>
             Start Scanning
           </button>
         </div>

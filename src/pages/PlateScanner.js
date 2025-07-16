@@ -234,7 +234,7 @@ function PlateScanner() {
 
   return (
     <motion.div className="scanner-container" {...pageAnimation}>
-      <Link to="/end" className="end-scan-button">End Scan</Link>
+      <Link to="/list" className="end-scan-button">Back to List</Link>
       <video ref={videoRef} style={{ display: "none" }} playsInline muted autoPlay />
       <div className="canvas-wrapper">
         <canvas ref={canvasRef} width={720} height={1280} className="scanner-canvas" />
