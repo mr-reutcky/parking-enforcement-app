@@ -8,7 +8,7 @@ function List() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    axios.get("https://your-api-url.com/api/plates") // replace with your real API
+    axios.get("https://parking-enforcement-server.onrender.com/api/permits", { headers: {"x-app-client": "lpr-client"} })
       .then(res => {
         const now = new Date();
         const valid = res.data.filter(p => new Date(p.endTime) > now);
