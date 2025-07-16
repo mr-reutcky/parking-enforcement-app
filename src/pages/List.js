@@ -34,9 +34,11 @@ function ValidPlatesList() {
         <Link to="/scanner" className="camera-btn">Use Camera</Link>
       </div>
 
-      <div className="search-container">
+      <div className="search-wrapper">
+        <span className="search-icon">🔍</span>
         <input
           type="text"
+          className="search-input"
           placeholder="Search license plates"
           value={search}
           onChange={(e) => setSearch(e.target.value)}

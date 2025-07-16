@@ -31,20 +31,27 @@
   font-size: 1.3rem;
 }
 
-.search-container {
+.search-wrapper {
+  position: relative;
   margin-bottom: 1rem;
 }
 
-.search-container input[type="text"] {
-    width: 100%;
-    padding: 0.6rem 0.6rem 0.6rem 2.5rem;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background-image: url("data:image/svg+xml,%3Csvg fill='gray' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 2a8 8 0 105.29 14.29l4.7 4.7a1 1 0 001.42-1.42l-4.7-4.7A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z'/%3E%3C/svg%3E");
-    background-size: 18px;
-    background-repeat: no-repeat;
-    background-position: 0.8rem center;
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: #888;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 0.6rem 0.6rem 2.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 .plate-table {
