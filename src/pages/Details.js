@@ -5,21 +5,30 @@ import "../css/Details.css";
 import { motion } from "framer-motion";
 import { pageAnimation } from "../components/pageAnimations";
 
+/**
+ * useQuery
+ * Custom hook for accessing query parameters from the URL.
+ */
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 function Details() {
   const query = useQuery();
-  const plate = query.get("plate");
+  const plate = query.get("plate"); // Extract license plate from query params
   const [permit, setPermit] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(null);
   const navigate = useNavigate();
 
+  /**
+   * formatDate
+   * Converts an ISO datetime string into a human-readable format.
+   * Falls back to "N/A" if date is null or invalid.
+   */
   function formatDate(dateStr) {
     if (!dateStr) return "N/A";
-    const date = new Date(dateStr + ":00");
+    const date = new Date(dateStr + ":00"); // Normalize for Safari compatibility
     return date.toLocaleString("en-US", {
       month: "long",
       day: "numeric",
@@ -30,13 +39,18 @@ function Details() {
     });
   }
 
+  /**
+   * Fetch permit data when the plate query changes.
+   * Sends a POST request to look up the plate in the backend.
+   */
   useEffect(() => {
     if (!plate) return;
 
     axios
-      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", { plate }, {
-        headers: { "x-app-client": "lpr-client" }
-      })
+      .post("https://parking-enforcement-server.onrender.com/api/lookup-plate", 
+        { plate },
+        { headers: { "x-app-client": "lpr-client" } }
+      )
       .then((res) => {
         setPermit(res.data.permit);
         setIsAuthorized(res.data.isAuthorized);
@@ -48,6 +62,7 @@ function Details() {
       });
   }, [plate]);
 
+  // Handle missing plate in URL
   if (!plate) {
     return (
       <motion.div className="details-container" {...pageAnimation}>
@@ -57,6 +72,7 @@ function Details() {
     );
   }
 
+  // Loading state while fetching API data
   if (loading) {
     return (
       <div className="details-container">
@@ -68,31 +84,38 @@ function Details() {
   return (
     <motion.div className="details-container" {...pageAnimation}>
       <h1>Booking Details</h1>
-        <div className="plate-details-card">
-          <div className="row"><span className="label">Plate:</span> {plate}</div>
-          <div className="row"><span className="label">Spot Number:</span> {permit?.spot || "N/A"}</div>
-          <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
-          <div className="row"><span className="label">Make:</span> {permit?.make || "N/A"}</div>
-          <div className="row"><span className="label">Model:</span> {permit?.model || "N/A"}</div>
-          <div className="row"><span className="label">Color:</span> {permit?.color || "N/A"}</div>
-          <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start) || "N/A"}</div>
-          <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end) || "N/A"}</div>
-          <div className="row"><span className="label">Status:</span>
-            <span className={isAuthorized ? "status valid" : "status invalid"}>
-              {isAuthorized ? "Valid" : "Expired / Invalid"}
-            </span>
-          </div>
 
-          {!isAuthorized && (
-            <div className="row">
-              <Link to={`/report?plate=${plate}`} className="report-button">
-                Create Report
-              </Link>
-            </div>
-          )}
-          
+      {/* Main permit info card */}
+      <div className="plate-details-card">
+        <div className="row"><span className="label">Plate:</span> {plate}</div>
+        <div className="row"><span className="label">Spot Number:</span> {permit?.spot || "N/A"}</div>
+        <div className="row"><span className="label">Owner:</span> {permit?.owner || "N/A"}</div>
+        <div className="row"><span className="label">Make:</span> {permit?.make || "N/A"}</div>
+        <div className="row"><span className="label">Model:</span> {permit?.model || "N/A"}</div>
+        <div className="row"><span className="label">Color:</span> {permit?.color || "N/A"}</div>
+        <div className="row"><span className="label">Start:</span> {formatDate(permit?.permit_start)}</div>
+        <div className="row"><span className="label">End:</span> {formatDate(permit?.permit_end)}</div>
+        <div className="row">
+          <span className="label">Status:</span>
+          <span className={isAuthorized ? "status valid" : "status invalid"}>
+            {isAuthorized ? "Valid" : "Expired / Invalid"}
+          </span>
         </div>
-      <button onClick={() => navigate(-1)} className="back-button">Back to Scan</button>
+
+        {/* Show "Create Report" option if unauthorized */}
+        {!isAuthorized && (
+          <div className="row">
+            <Link to={`/report?plate=${plate}`} className="report-button">
+              Create Report
+            </Link>
+          </div>
+        )}
+      </div>
+
+      {/* Back button to return to scanner */}
+      <button onClick={() => navigate(-1)} className="back-button">
+        Back to Scan
+      </button>
     </motion.div>
   );
 }

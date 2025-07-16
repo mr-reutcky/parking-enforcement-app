@@ -1,3 +1,4 @@
+/* Global body styles */
 body {
   font-family: 'Manrope', sans-serif;
   margin: 0;
@@ -5,22 +6,26 @@ body {
   color: #111111;
 }
 
+/* Main container for the home screen */
 .home-page {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
+/* Header styling for top of the home screen */
 .home-header {
   padding: 20px 24px;
 }
 
+/* Gryd logo styling */
 .gryd-logo {
   font-size: 20px;
   font-weight: 600;
   margin: 0;
 }
 
+/* Text color utilities for branding */
 .gryd-bold {
   color: #111111;
 }
@@ -29,6 +34,7 @@ body {
   color: #00AF85;
 }
 
+/* Main section: centers content vertically and horizontally */
 .home-main {
   flex: 1;
   display: flex;
@@ -37,12 +43,14 @@ body {
   padding: 0 24px;
 }
 
+/* Wrapper for home screen messaging and button */
 .main-content {
   text-align: center;
   width: 100%;
   max-width: 320px;
 }
 
+/* Instructional text below logo */
 .guide-text {
   font-size: 15px;
   font-weight: 400;
@@ -51,6 +59,7 @@ body {
   line-height: 1.4;
 }
 
+/* "Start Scanning" button */
 .start-button {
   width: 100%;
   padding: 14px;

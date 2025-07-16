@@ -1,3 +1,4 @@
+/* End Scan Button - fixed in top-right corner */
 .end-scan-button {
   position: absolute;
   top: 16px;
@@ -25,7 +26,7 @@
   background: black;
 }
 
-/* Canvas fills the entire screen */
+/* Canvas layer for rendering live camera feed */
 .scanner-canvas {
   position: absolute;
   top: 0;
@@ -36,7 +37,7 @@
   z-index: 1;
 }
 
-/* Guide box centered over the canvas */
+/* Central plate guide overlay for aligning license plates */
 .plate-guide {
   position: absolute;
   top: 50%;
@@ -46,30 +47,25 @@
   z-index: 2;
 }
 
-/* Plate list overlaying the bottom */
+/* Bottom slide-up log of detected plates */
 .plate-list {
   position: absolute;
   bottom: 0;
   left: 5px;
   right: 5px;
-
   max-height: 33svh;
   background-color: #f7f7f7;
   padding: 16px;
   box-sizing: border-box;
-
   border-radius: 16px 16px 0 0;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
   overflow-y: auto;
   z-index: 3;
-
-  /* Prevent inner scroll content from touching bottom edge */
-  padding-bottom: 8px;
-
+  padding-bottom: 8px; /* Prevents inner scroll content from hugging edge */
   transition: height 0.3s ease-in-out;
 }
 
-/* Scrollbar styling */
+/* Scrollbar styling for plate list */
 .plate-list::-webkit-scrollbar {
   width: 6px;
 }
@@ -79,14 +75,14 @@
   border-radius: 3px;
 }
 
-/* List container */
+/* Unstyled list container */
 .plate-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-/* Each list item (plate entry) */
+/* Each scanned plate entry */
 .plate-list-item {
   display: flex;
   justify-content: space-between;
@@ -100,6 +96,7 @@
   font-weight: 500;
 }
 
+/* Detail button */
 .plate-action-button {
   font-size: 14px;
   font-weight: 600;
@@ -112,7 +109,7 @@
   color: #17bb94;
 }
 
-/* Red style for 'New Report' */
+/* "Report" version of the action button */
 .plate-action-button.report {
   color: #ff4d4d;
 }
@@ -121,6 +118,7 @@
   color: #d93838;
 }
 
+/* Plate number display */
 .plate-number {
   font-weight: bold;
 }
@@ -133,11 +131,13 @@
   color: #FF4D4D;
 }
 
+/* Optional additional metadata */
 .plate-owner {
   font-size: 16px;
   color: #333;
 }
 
+/* Fallback UI for empty list */
 .empty-plate-message {
   text-align: center;
   color: #888;
@@ -145,7 +145,7 @@
   margin-top: 20px;
 }
 
-/* Plate Guide Corners */
+/* Corner decorations for the guide box */
 .corner {
   position: absolute;
   background-color: #00AF85;
@@ -161,6 +161,7 @@
   height: 20px;
 }
 
+/* Positioning for each corner of the guide */
 .top-left.horizontal { top: 0; left: 0; }
 .top-left.vertical   { top: 0; left: 0; }
 
@@ -173,11 +174,12 @@
 .bottom-right.horizontal { bottom: 0; right: 0; }
 .bottom-right.vertical   { bottom: 0; right: 0; }
 
+/* Floating + button (repeated, but consistent with list page) */
 .add-btn {
   position: fixed;
-  bottom: 4.5rem; /* above the footer */
+  bottom: 4.5rem; /* above footer if present */
   right: 1.5rem;
-  background-color: var(--primary-green);
+  background-color: #00AF85;
   color: white;
   font-size: 2rem;
   font-weight: bold;

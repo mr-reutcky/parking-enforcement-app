@@ -1,15 +1,17 @@
 :root {
-  --primary-green: #00af85;
+  --primary-green: #00af85; /* Brand primary color used throughout UI */
 }
 
+/* Main container for the list view page */
 .list-page {
   padding: 1rem;
-  padding-bottom: 5rem; /* extra space for footer */
+  padding-bottom: 5rem; /* Extra space to accommodate fixed footer */
   background-color: #f9f9f9;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
+/* Header bar with title and camera link/button */
 .top-bar {
   display: flex;
   justify-content: space-between;
@@ -17,6 +19,7 @@
   margin-bottom: 1rem;
 }
 
+/* Page title styling */
 .title {
   margin-top: 60px;
   margin-bottom: -5px;
@@ -24,6 +27,7 @@
   font-weight: 600;
 }
 
+/* Link or button to access camera */
 .camera-btn {
   color: var(--primary-green);
   font-weight: 500;
@@ -31,11 +35,13 @@
   font-size: 1.3rem;
 }
 
+/* Search bar container */
 .search-wrapper {
   position: relative;
   margin-bottom: 1rem;
 }
 
+/* Search icon positioned inside the input */
 .search-icon {
   position: absolute;
   left: 10px;
@@ -46,20 +52,23 @@
   pointer-events: none;
 }
 
+/* Search input field */
 .search-input {
   width: 100%;
-  padding: 0.6rem 0.6rem 0.6rem 2.7rem;
+  padding: 0.6rem 0.6rem 0.6rem 2.7rem; /* extra left padding for icon */
   font-size: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
 
+/* Table-like layout for plate log */
 .plate-table {
   background-color: white;
   border-radius: 8px;
   overflow: hidden;
 }
 
+/* Shared styles for table rows and header */
 .plate-header,
 .plate-row {
   display: grid;
@@ -71,11 +80,13 @@
   align-items: center;
 }
 
+/* Header row styling */
 .plate-header {
   background-color: #f2f2f2;
   font-weight: bold;
 }
 
+/* Footer notification bar fixed to bottom of screen */
 .notify-footer {
   position: fixed;
   bottom: 0;
@@ -95,9 +106,10 @@
   text-decoration: none;
 }
 
+/* Floating circular "+" add button */
 .add-btn {
   position: fixed;
-  bottom: 4.5rem; /* above the footer */
+  bottom: 4.5rem; /* Positioned just above footer */
   right: 1.5rem;
   background-color: var(--primary-green);
   color: white;
@@ -115,11 +127,13 @@
   z-index: 100;
 }
 
+/* Make plate rows clickable without styling issues */
 .plate-row-link {
   text-decoration: none;
   color: inherit;
 }
 
+/* Placeholder display when no search results found */
 .no-results {
   display: flex;
   flex-direction: column;

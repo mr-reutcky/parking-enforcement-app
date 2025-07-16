@@ -1,5 +1,6 @@
+/* Main container for the plate details screen */
 .details-container {
-  height: 100dvh;
+  height: 100dvh; /* Full viewport height, including mobile safe area */
   padding: 20px 16px;
   background-color: #f2f2f2;
   box-sizing: border-box;
@@ -8,6 +9,7 @@
   justify-content: space-between;
 }
 
+/* Page title styling */
 h1 {
   font-size: 20px;
   font-weight: bold;
@@ -16,6 +18,7 @@ h1 {
   text-align: center;
 }
 
+/* Card component for plate data display */
 .plate-details-card {
   background: white;
   border-radius: 12px;
@@ -27,6 +30,7 @@ h1 {
   gap: 12px;
 }
 
+/* Row layout for individual detail items */
 .row {
   display: flex;
   justify-content: space-between;
@@ -40,11 +44,13 @@ h1 {
   border-bottom: none;
 }
 
+/* Label styling inside each row */
 .label {
   font-weight: 600;
   color: #444;
 }
 
+/* Status badge shared base styling */
 .status {
   font-weight: bold;
   padding: 4px 10px;
@@ -53,16 +59,19 @@ h1 {
   white-space: nowrap;
 }
 
+/* Valid plate badge */
 .status.valid {
   background-color: #00af85;
   color: white;
 }
 
+/* Invalid plate badge */
 .status.invalid {
   background-color: #ff4d4d;
   color: white;
 }
 
+/* Back navigation button */
 .back-button {
   margin-top: 20px;
   display: block;
@@ -82,7 +91,7 @@ h1 {
   background-color: #17bb94;
 }
 
-
+/* Button to report invalid plate */
 .report-button {
   display: block;
   width: 100%;
@@ -102,4 +111,3 @@ h1 {
 .report-button:hover {
   background-color: #ff1a1a;
 }
-

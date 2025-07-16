@@ -1,18 +1,20 @@
+/* Ensure full-page layout with no scrollbars */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow: hidden; /* Prevent scrolling, suitable for full-screen camera view */
   background: #fff;
 }
 
+/* Base body styles and font rendering optimizations */
 body {
   margin: 0;
   font-family: Manrope, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   font-size: 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased; /* Smoother font rendering on WebKit */
+  -moz-osx-font-smoothing: grayscale;  /* Improve text appearance on macOS */
 }

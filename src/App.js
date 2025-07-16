@@ -5,7 +5,11 @@ import Details from "./pages/Details";
 import List from "./pages/List";
 import { AnimatePresence } from "framer-motion";
 
-
+/**
+ * App
+ * Defines client-side routes for the license plate scanning app.
+ * Wrapped in AnimatePresence for page transition animations.
+ */
 function App() {
   return (
     <AnimatePresence mode="wait">
@@ -14,7 +18,7 @@ function App() {
         <Route path="/scanner" element={<PlateScanner />} />
         <Route path="/list" element={<List />} />
         <Route path="/details" element={<Details />} />
-        {/* <Route path="/submit" element={<SubmitPage />} /> */}
+        {/* Future: <Route path="/submit" element={<SubmitPage />} /> */}
       </Routes>
     </AnimatePresence>
   );

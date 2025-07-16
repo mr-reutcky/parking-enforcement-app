@@ -9,15 +9,19 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Clear any previously stored scan data
     localStorage.removeItem("scannedPlates");
-    // Spin up the server
-    axios.get("https://parking-enforcement-server.onrender.com/", { headers: {"x-app-client": "lpr-client"} })
-      .then((response) => {
-        console.log("Server is running:", response.data);
-      })
-      .catch((error) => {
-        console.error("Error checking server health:", error);
-      });
+
+    // Ping backend to "wake" the Render server (helps with cold start)
+    axios.get("https://parking-enforcement-server.onrender.com/", {
+      headers: { "x-app-client": "lpr-client" }
+    })
+    .then((response) => {
+      console.log("Server is running:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error checking server health:", error);
+    });
   }, []);
 
   return (
@@ -31,6 +35,8 @@ const Home = () => {
       <main className="home-main">
         <div className="main-content">
           <p className="guide-text">Tap below to start scanning license plates.</p>
+
+          {/* Button to navigate to the scanner list page */}
           <button className="start-button" onClick={() => navigate("/list")}>
             Start Scanning
           </button>

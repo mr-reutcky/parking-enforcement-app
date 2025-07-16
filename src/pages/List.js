@@ -5,6 +5,11 @@ import "../css/PlateList.css";
 import { motion } from "framer-motion";
 import { pageAnimation } from "../components/pageAnimations";
 
+/**
+ * formatEndTime
+ * Formats a datetime string into a friendly time or date+time,
+ * depending on whether the permit ends today.
+ */
 function formatEndTime(endTimeStr) {
   const end = new Date(endTimeStr);
   const now = new Date();
@@ -28,12 +33,16 @@ function ValidPlatesList() {
   const [plates, setPlates] = useState([]);
   const [search, setSearch] = useState("");
 
+  // Fetch all permits and filter to only currently valid ones
   useEffect(() => {
-    axios.get("https://parking-enforcement-server.onrender.com/api/permits", { headers: {"x-app-client": "lpr-client"} })
-      .then(res => {
+    axios
+      .get("https://parking-enforcement-server.onrender.com/api/permits", {
+        headers: { "x-app-client": "lpr-client" },
+      })
+      .then((res) => {
         const now = new Date();
 
-        const valid = res.data.filter(p => {
+        const valid = res.data.filter((p) => {
           const start = new Date(p.permit_start);
           const end = new Date(p.permit_end);
           return start <= now && now <= end;
@@ -41,20 +50,23 @@ function ValidPlatesList() {
 
         setPlates(valid);
       })
-      .catch(err => console.error("Error fetching plates:", err));
+      .catch((err) => console.error("Error fetching plates:", err));
   }, []);
 
-  const filtered = plates.filter(p =>
+  // Apply search filter
+  const filtered = plates.filter((p) =>
     p.plate.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
     <motion.div className="list-page" {...pageAnimation}>
+      {/* Header with title and camera shortcut */}
       <div className="top-bar">
         <h1 className="title">78 Radcliffe Rd</h1>
         <Link to="/scanner" className="camera-btn">Use Camera</Link>
       </div>
 
+      {/* Search input */}
       <div className="search-wrapper">
         <span className="search-icon">🔍</span>
         <input
@@ -66,6 +78,7 @@ function ValidPlatesList() {
         />
       </div>
 
+      {/* Plate results table */}
       <div className="plate-table">
         <div className="plate-header">
           <span>SPOT</span>
@@ -96,10 +109,12 @@ function ValidPlatesList() {
         )}
       </div>
 
+      {/* Persistent notification footer */}
       <div className="notify-footer">
         <p>Noticed an issue? <a href="#">Notify operations</a></p>
       </div>
 
+      {/* Floating add button (currently no handler attached) */}
       <button className="add-btn">+</button>
     </motion.div>
   );
