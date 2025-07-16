@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../css/PlateScanner.css";
+import axios from "axios";
 
 function PlateListItem({ plate }) {
   const plateClass = plate.valid ? "plate-number valid" : "plate-number invalid";
@@ -10,6 +11,7 @@ function PlateListItem({ plate }) {
 
   return (
     <li className="plate-list-item">
+      <span className="plate-spot">{plate.spot}</span>
       <span className={plateClass}>{plate.text}</span>
       <Link
         className={buttonClass}
