@@ -16,6 +16,7 @@ function PlateScanner() {
   const [scannedPlates, setScannedPlates] = useState([]);
   const [zoom, setZoom] = useState(1);
   const zoomRef = useRef(1);
+  const zoomIntervalRef = useRef(null);
 
   const frameCounter = useRef(0);
   const lastApiCallTimeRef = useRef(0);
@@ -38,10 +39,27 @@ function PlateScanner() {
     localStorage.setItem("scannedPlates", JSON.stringify(scannedPlates));
   }, [scannedPlates]);
 
-  // Keep zoomRef updated
   useEffect(() => {
     zoomRef.current = zoom;
   }, [zoom]);
+
+  const startZooming = (direction) => {
+    if (zoomIntervalRef.current) return;
+
+    zoomIntervalRef.current = setInterval(() => {
+      setZoom((prevZoom) => {
+        let newZoom = direction === "in" ? prevZoom + 0.05 : prevZoom - 0.05;
+        newZoom = Math.min(Math.max(newZoom, 1), 2);
+        zoomRef.current = newZoom;
+        return newZoom;
+      });
+    }, 100);
+  };
+
+  const stopZooming = () => {
+    clearInterval(zoomIntervalRef.current);
+    zoomIntervalRef.current = null;
+  };
 
   const processFrame = () => {
     try {
@@ -74,7 +92,6 @@ function PlateScanner() {
         sy = (videoHeight - sh) / 2;
       }
 
-      // Apply zoom
       const drawWidth = canvasWidth * zoomRef.current;
       const drawHeight = canvasHeight * zoomRef.current;
       const offsetX = (canvasWidth - drawWidth) / 2;
@@ -259,15 +276,27 @@ function PlateScanner() {
           width={720}
           height={1280}
           className="scanner-canvas"
-          style={{ transform: `scale(${zoom})` }}
+          style={{ transform: `scale(${zoom})`, transition: "transform 0.3s ease" }}
         />
         <PlateGuideBox width={GUIDE_WIDTH} height={GUIDE_HEIGHT} />
       </div>
 
-      {/* Zoom pill buttons */}
+      {/* Zoom pill buttons with hold-to-zoom */}
       <div className="zoom-pill">
-        <button onClick={() => setZoom((z) => Math.min(z + 0.1, 2))}>+</button>
-        <button onClick={() => setZoom((z) => Math.max(z - 0.1, 1))}>−</button>
+        <button
+          onMouseDown={() => startZooming("in")}
+          onMouseUp={stopZooming}
+          onMouseLeave={stopZooming}
+          onTouchStart={() => startZooming("in")}
+          onTouchEnd={stopZooming}
+        >+</button>
+        <button
+          onMouseDown={() => startZooming("out")}
+          onMouseUp={stopZooming}
+          onMouseLeave={stopZooming}
+          onTouchStart={() => startZooming("out")}
+          onTouchEnd={stopZooming}
+        >−</button>
       </div>
 
       <PlateList plates={scannedPlates} />
