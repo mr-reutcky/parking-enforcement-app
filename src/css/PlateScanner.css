@@ -35,7 +35,7 @@
   height: 100dvh;
   object-fit: cover;
   z-index: 1;
-  transition: transform 0.75s ease; /* Smooth zooming effect */
+  transition: transform 0.75s ease;
   transform-origin: center center;
 }
 
