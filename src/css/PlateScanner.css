@@ -35,6 +35,8 @@
   height: 100dvh;
   object-fit: cover;
   z-index: 1;
+  transition: transform 0.75s ease; /* Smooth zooming effect */
+  transform-origin: center center;
 }
 
 /* Central plate guide overlay for aligning license plates */
@@ -193,4 +195,37 @@
   align-items: center;
   justify-content: center;
   z-index: 100;
+}
+.zoom-pill {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 9999; /* make sure it's above canvas, guide, etc */
+  display: flex;
+  flex-direction: column;
+  width: 48px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.zoom-pill button {
+  all: unset;
+  text-align: center;
+  padding: 10px 0;
+  background-color: #00AF85;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.zoom-pill button:hover {
+  background-color: #008e6e;
+}
+
+.zoom-pill button:first-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
