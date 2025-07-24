@@ -105,6 +105,7 @@ function ValidPlatesList() {
             <h2>No bookings found</h2>
             <p>We can't find any active</p>
             <p>Bookings matching your search</p>
+            <p>Click <Link className="report-link" to="/report">HERE</Link> to create a report</p>
           </div>
         )}
       </div>
