@@ -51,12 +51,12 @@ function PlateScanner() {
 
     zoomIntervalRef.current = setInterval(() => {
       setZoom((prevZoom) => {
-        let newZoom = direction === "in" ? prevZoom + 0.05 : prevZoom - 0.05;
-        newZoom = Math.min(Math.max(newZoom, 1), 2);
+        let newZoom = direction === "in" ? prevZoom + 0.01 : prevZoom - 0.01;
+        newZoom = Math.min(Math.max(newZoom, 1), 2.5);
         zoomRef.current = newZoom;
         return newZoom;
       });
-    }, 100);
+    }, 10);
   };
 
   const stopZooming = () => {
@@ -270,7 +270,6 @@ function PlateScanner() {
   return (
     <motion.div className="scanner-container" {...pageAnimation}>
       <IoClose className="top-right-exit close-icon" onClick={() => navigate("/list")} />
-
 
       <video ref={videoRef} style={{ display: "none" }} playsInline muted autoPlay />
 
