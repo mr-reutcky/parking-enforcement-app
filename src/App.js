@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import PlateScanner from "./pages/PlateScanner";
 import Details from "./pages/Details";
 import List from "./pages/List";
+import ReportPage from "./pages/ReportPage";
+import ReportReview from "./pages/ReportReview";
 import { AnimatePresence } from "framer-motion";
 
 /**
@@ -18,6 +20,8 @@ function App() {
         <Route path="/scanner" element={<PlateScanner />} />
         <Route path="/list" element={<List />} />
         <Route path="/details" element={<Details />} />
+        <Route path="/report/*" element={<ReportPage />} />
+        <Route path="/report/summary" element={<ReportReview />} />
         {/* Future: <Route path="/submit" element={<SubmitPage />} /> */}
       </Routes>
     </AnimatePresence>

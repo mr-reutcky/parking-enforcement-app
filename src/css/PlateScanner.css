@@ -1,5 +1,5 @@
 /* End Scan Button - fixed in top-right corner */
-.end-scan-button {
+.top-right-exit {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -11,7 +11,8 @@
   transition: background-color 0.2s ease;
 }
 
-.end-scan-button:hover {
+
+.top-right-exit:hover {
   color: #17bb94;
 }
 

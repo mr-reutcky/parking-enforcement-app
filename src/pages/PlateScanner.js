@@ -6,9 +6,12 @@ import PlateGuideBox from "../components/PlateGuideBox";
 import { Link } from "react-router-dom";
 import "../css/PlateScanner.css";
 import { motion } from "framer-motion";
+import { IoClose } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 import { pageAnimation } from "../components/pageAnimations";
 
 function PlateScanner() {
+  const navigate = useNavigate();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const boxColorRef = useRef("lightblue"); // Used for drawing feedback on detection
@@ -265,7 +268,8 @@ function PlateScanner() {
 
   return (
     <motion.div className="scanner-container" {...pageAnimation}>
-      <Link to="/list" className="end-scan-button">Back to List</Link>
+      <IoClose className="top-right-exit close-icon" onClick={() => navigate("/list")} />
+
 
       {/* Hidden video element used as camera feed */}
       <video ref={videoRef} style={{ display: "none" }} playsInline muted autoPlay />
@@ -280,7 +284,7 @@ function PlateScanner() {
       <PlateList plates={scannedPlates} />
 
       {/* Add new entry (future use?) */}
-      <button className="add-btn">+</button>
+      <button className="add-btn"  onClick={() => navigate("/report")}>+</button>
     </motion.div>
   );
 }

@@ -114,8 +114,10 @@ function ValidPlatesList() {
         <p>Noticed an issue? <a href="#">Notify operations</a></p>
       </div>
 
-      {/* Floating add button (currently no handler attached) */}
-      <button className="add-btn">+</button>
+      {/* Floating add button that start the report */}
+      <Link to="/report">
+        <button className="add-btn">+</button>
+      </Link> 
     </motion.div>
   );
 }
