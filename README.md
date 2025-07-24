@@ -1,20 +1,23 @@
 # Parking Enforcement App
 
-A React-based mobile-friendly Progressive Web App (PWA) designed for real-time license plate scanning and permit validation. It features an AR-style camera overlay using OpenCV.js, backend integration for plate detection and permit status fetching, and intuitive UI flows for scanning, reviewing, and reporting.
+A mobile-optimized Progressive Web App (PWA) for real-time license plate recognition and permit validation. Built with React, OpenCV.js, and AWS Rekognition, the system enables enforcement officers to quickly detect, verify, and report vehicles in a parking lot using an AR-style interface and live camera stream.
+
+📄 [Full Technical Documentation](https://docs.google.com/document/d/1ZUr2ucs3BqALr_eCPK9K1GGRE5FoxlXh5cY7ZRRb82g/edit?usp=sharing)
 
 ---
 
 ## Table of Contents
 
 - [Features](#features)  
+- [Tech Stack](#tech-stack)  
 - [Getting Started](#getting-started)  
   - [Prerequisites](#prerequisites)  
   - [Installation](#installation)  
   - [Running Locally](#running-locally)  
-- [App Architecture](#app-architecture)  
-  - [Core Pages & Components](#core-pages--components)  
-  - [Scanning Flow & Tech Stack](#scanning-flow--tech-stack)  
-- [API & Configuration](#api--configuration)  
+- [Architecture Overview](#architecture-overview)  
+  - [Core Components](#core-components)  
+  - [Scanning Workflow](#scanning-workflow)  
+- [API Endpoints](#api-endpoints)  
 - [Code Structure](#code-structure)  
 - [Development Notes](#development-notes)  
 
@@ -22,14 +25,35 @@ A React-based mobile-friendly Progressive Web App (PWA) designed for real-time l
 
 ## Features
 
-- Real-time license plate scanning using OpenCV.js with on-device edge detection  
-- AR-style overlay helps users align plates in live video  
-- Automatic optical character recognition (OCR) via backend  
-- Displays plate validity using permit data (Valid / Expired / Invalid)  
-- Detailed permit view with parking spot and time information  
-- Scanned plates list persistently stored via `localStorage`  
-- Searchable permit list for manual lookup  
-- "Create Report" action if the plate doesn't have a valid permit  
+- Real-time plate detection using OpenCV.js  
+- AR-style plate guide overlay for user alignment  
+- Automatic OCR using AWS Rekognition (text + label)  
+- Plate validation via mock permit database  
+- Valid/Expired/Invalid status color-coded in UI  
+- Scanned plate list saved with `localStorage`  
+- Manual permit search and detail view  
+- Report button for unauthorized vehicles  
+
+---
+
+## Tech Stack
+
+### Frontend
+
+- **React (JavaScript)** – Declarative UI and component architecture  
+- **CSS** – Responsive styles and overlays  
+- **OpenCV.js** – Real-time browser-based plate detection  
+- **Framer Motion** – UI transitions and animations  
+- **Canvas API** – Frame processing from video feed  
+- **MediaDevices API** – Access device camera  
+
+### Backend
+
+- **Express.js** – REST API server for OCR and data validation  
+- **SQLite** – Lightweight local database of permits  
+- **AWS Rekognition**  
+  - `DetectLabels`: Identifies vehicles and plate bounding boxes  
+  - `DetectText`: Extracts plate numbers from cropped images  
 
 ---
 
@@ -37,9 +61,9 @@ A React-based mobile-friendly Progressive Web App (PWA) designed for real-time l
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v18+  
-- npm (bundled with Node.js) or Yarn  
-- HTTPS/SSL context to allow camera access (e.g., `localhost`)
+- Node.js v18+  
+- npm or Yarn  
+- HTTPS-capable dev server for accessing camera (`https://localhost`)
 
 ### Installation
 
@@ -55,69 +79,78 @@ npm install
 npm start
 ```
 
-- Visit `https://localhost:3000/` (or `http://localhost:3000/` on desktop)  
-- Grant camera permissions and follow the onboarding flow
+Open your browser to:  
+`https://localhost:3000/`  
+Allow camera access when prompted.
 
 ---
 
-## App Architecture
+## Architecture Overview
 
-### Core Pages & Components
+### Core Components
 
-| Page / Component         | Description |
-|--------------------------|-------------|
-| `Home`                   | Landing page with “Start Scanning” button |
-| `PieceScanner`           | AR scan mode; live camera, overlay, detection + API call |
-| `List`                   | Searchable list of valid active permits |
-| `Details`                | Shows permit detail; allows reporting invalid plates |
-| `PlateGuideBox`          | Overlay component that draws corner guides |
-| `PlateList` / `PlateListItem` | UI for listing scanned plates with validity labels |
-
-### Scanning Flow & Tech Stack
-
-1. OpenCV.js: edge detection → contour detection → plate detection  
-2. Cooldown logic: limits API calls by frames & time  
-3. Backend OCR: cropping largest candidate → `POST /detect-plate`  
-4. State update: drives UI list, color-coded validity, and data persistence  
-5. UX overlay: Framer Motion controls animations for polished transitions  
+| Component/File              | Description |
+|----------------------------|-------------|
+| `Home.jsx`                 | Entry screen, resets state and routing |
+| `PlateScanner.jsx`         | Handles OpenCV + AWS Rekognition detection |
+| `PlateGuideBox.jsx`        | Draws corner guides over the camera view |
+| `PlateList.jsx`            | Shows recent scans, validity status |
+| `ValidPlatesList.jsx`      | All currently valid permits, searchable |
+| `Details.jsx`              | Detailed view of permit and report button |
+| `pageAnimation.js`         | Framer Motion page transition config |
 
 ---
 
-## API & Configuration
+## Scanning Workflow
 
-Built to work with your backend hosted at `https://parking-enforcement-server.onrender.com`, exposing:
+1. Camera feed captured via `MediaDevices` → `<video>`  
+2. Frame captured to `<canvas>` → OpenCV.js detects plate regions  
+3. Plate region is cropped and base64-encoded  
+4. Image sent to backend via `POST /api/detect-plate`  
+5. AWS Rekognition returns plate text → matched against DB  
+6. Result stored in local state + shown in UI
 
-- `GET /` – Health check / warmup  
-- `GET /api/permits` – Returns JSON list of all permits  
-- `POST /api/lookup-plate` – Finds permit by plate parameter  
-- `POST /api/detect-plate` – Accepts `{ image: base64 }`, returns `{ plate, isAuthorized, owner }`
+---
 
-Note: For production, replace hard-coded URLs with an environment-specific config or `.env` file, e.g.:
+## API Endpoints
 
-```env
-VITE_API_BASE_URL=https://parking-enforcement-server.onrender.com
-```
+Base URL: `https://parking-enforcement-server.onrender.com`
+
+| Method | Endpoint                | Description |
+|--------|-------------------------|-------------|
+| GET    | `/api/permits`          | Returns all permit data |
+| POST   | `/api/lookup-plate`     | `{ plate }` → permit details if found |
+| POST   | `/api/detect-plate`     | `{ image: base64 }` → plate text + status |
+| GET    | `/`                     | Health check |
 
 ---
 
 ## Code Structure
 
-``` md
+``` bash
 src/
-├── components/         # Reusable UI components (PlateGuideBox, PlateList)
-├── css/                # Stylesheets for each page and feature
-├── pages/              # Routeable pages (Home, Scanner, List, Details)
-├── components/         # Animation presets & utilities
-├── App.jsx             # App routes & page transitions
-├── index.jsx           # App root with BrowserRouter basename
-└── setupOpenCV.js      # Handles runtime initialization for OpenCV.js
+├── components/
+│   ├── PlateGuideBox.jsx
+│   ├── PlateList.jsx
+│   ├── PlateListItem.jsx
+├── css/
+│   └── *.css
+├── pages/
+│   ├── Home.jsx
+│   ├── PlateScanner.jsx
+│   ├── ValidPlatesList.jsx
+│   └── Details.jsx
+├── pageAnimations.js
+├── setupOpenCV.js
+├── App.jsx
+└── index.jsx
 ```
 
 ---
 
 ## Development Notes
 
-- LocalStorage usage: Scanned plate history is persisted and survives reloads  
-- Camera feed: Hidden `<video>` is drawn into `<canvas>` for overlays + processing  
-- Cooldown controls: `coolDownFrames`, `cooldownPeriod`, `frameCounter`, etc.  
-- Color feedback: Detection bounding box flashes green/red depending on validity  
+- `localStorage` retains scanned plate history  
+- `cooldownPeriod` and `coolDownFrames` reduce API spam  
+- OpenCV draws bounding boxes + guides on frame overlay  
+- Framer Motion animations polish page transitions  
