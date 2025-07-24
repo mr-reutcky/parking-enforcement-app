@@ -306,7 +306,7 @@ function PlateScanner() {
       <PlateList plates={scannedPlates} />
 
       {/* Add new entry (future use?) */}
-      <button className="add-btn"   onClick={() => navigate("/report")}>+</button>
+      <button className="add-btn"   onClick={() => navigate("/report")}cd >+</button>
     </motion.div>
   );
 }
