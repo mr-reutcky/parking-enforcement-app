@@ -111,7 +111,7 @@ function ValidPlatesList() {
 
       {/* Persistent notification footer */}
       <div className="notify-footer">
-        <p>Noticed an issue? <a href="#">Notify operations</a></p>
+        <p>Noticed an issue? <Link to="/home">Notify operations</Link></p>
       </div>
 
       {/* Floating add button that start the report */}
