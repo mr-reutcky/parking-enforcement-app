@@ -102,7 +102,7 @@ VITE_API_BASE_URL=https://parking-enforcement-server.onrender.com
 
 ## Code Structure
 
-```
+``` md
 src/
 ├── components/         # Reusable UI components (PlateGuideBox, PlateList)
 ├── css/                # Stylesheets for each page and feature

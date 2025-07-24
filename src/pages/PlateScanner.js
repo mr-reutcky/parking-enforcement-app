@@ -14,20 +14,22 @@ function PlateScanner() {
   const navigate = useNavigate();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const boxColorRef = useRef("lightblue"); // Used for drawing feedback on detection
+  const boxColorRef = useRef("lightblue");
 
   const [scannedPlates, setScannedPlates] = useState([]);
+  const [zoom, setZoom] = useState(1);
+  const zoomRef = useRef(1);
+  const zoomIntervalRef = useRef(null);
+
   const frameCounter = useRef(0);
   const lastApiCallTimeRef = useRef(0);
 
-  // Constants for the visual guide box and detection thresholds
   const GUIDE_WIDTH = 200;
   const GUIDE_HEIGHT = 100;
   const MARGIN = 20;
-  const cooldownPeriod = 3000; // API call cooldown in ms
-  const coolDownFrames = 15;   // Frames required before next detection
+  const cooldownPeriod = 3000;
+  const coolDownFrames = 15;
 
-  // Restore scanned plates from local storage
   useEffect(() => {
     const saved = localStorage.getItem("scannedPlates");
     if (saved) {
@@ -36,19 +38,32 @@ function PlateScanner() {
     checkReady();
   }, []);
 
-  // Persist scanned plates to local storage
   useEffect(() => {
     localStorage.setItem("scannedPlates", JSON.stringify(scannedPlates));
   }, [scannedPlates]);
 
-  /**
-   * Handles frame processing logic:
-   * - Grabs video frame
-   * - Crops detection region
-   * - Converts and detects edges with OpenCV
-   * - Finds candidate rectangles that match plate aspect ratio
-   * - Sends best match to backend API for OCR and validation
-   */
+  useEffect(() => {
+    zoomRef.current = zoom;
+  }, [zoom]);
+
+  const startZooming = (direction) => {
+    if (zoomIntervalRef.current) return;
+
+    zoomIntervalRef.current = setInterval(() => {
+      setZoom((prevZoom) => {
+        let newZoom = direction === "in" ? prevZoom + 0.05 : prevZoom - 0.05;
+        newZoom = Math.min(Math.max(newZoom, 1), 2);
+        zoomRef.current = newZoom;
+        return newZoom;
+      });
+    }, 100);
+  };
+
+  const stopZooming = () => {
+    clearInterval(zoomIntervalRef.current);
+    zoomIntervalRef.current = null;
+  };
+
   const processFrame = () => {
     try {
       const video = videoRef.current;
@@ -60,7 +75,6 @@ function PlateScanner() {
         return;
       }
 
-      // Draw scaled video frame to canvas
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
       const videoWidth = video.videoWidth;
@@ -81,9 +95,14 @@ function PlateScanner() {
         sy = (videoHeight - sh) / 2;
       }
 
-      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvasWidth, canvasHeight);
+      const drawWidth = canvasWidth * zoomRef.current;
+      const drawHeight = canvasHeight * zoomRef.current;
+      const offsetX = (canvasWidth - drawWidth) / 2;
+      const offsetY = (canvasHeight - drawHeight) / 2;
 
-      // Define cropped region for plate detection
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.drawImage(video, sx, sy, sw, sh, offsetX, offsetY, drawWidth, drawHeight);
+
       const guideX = Math.floor((canvasWidth - GUIDE_WIDTH) / 2) - MARGIN;
       const guideY = Math.floor((canvasHeight - GUIDE_HEIGHT) / 2) - MARGIN;
       const regionWidth = GUIDE_WIDTH + MARGIN * 2;
@@ -92,7 +111,6 @@ function PlateScanner() {
       const croppedImageData = ctx.getImageData(guideX, guideY, regionWidth, regionHeight);
       const croppedMat = cv.matFromImageData(croppedImageData);
 
-      // Preprocess for edge detection
       const gray = new cv.Mat();
       const edges = new cv.Mat();
       const contours = new cv.MatVector();
@@ -103,8 +121,6 @@ function PlateScanner() {
       cv.findContours(edges, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
 
       const candidates = [];
-
-      // Find rectangular contours with license plate-like dimensions
       for (let i = 0; i < contours.size(); i++) {
         const contour = contours.get(i);
         const rect = cv.boundingRect(contour);
@@ -116,11 +132,9 @@ function PlateScanner() {
       }
 
       if (candidates.length > 0) {
-        // Use largest candidate
         candidates.sort((a, b) => b.width * b.height - a.width * b.height);
         const rectToCrop = candidates[0];
 
-        // Translate local crop to global canvas coords
         const globalRect = {
           x: rectToCrop.x + guideX,
           y: rectToCrop.y + guideY,
@@ -128,7 +142,6 @@ function PlateScanner() {
           height: rectToCrop.height,
         };
 
-        // Draw detection box
         ctx.strokeStyle = boxColorRef.current;
         ctx.lineWidth = 4;
         ctx.strokeRect(globalRect.x, globalRect.y, globalRect.width, globalRect.height);
@@ -136,7 +149,6 @@ function PlateScanner() {
         frameCounter.current++;
         const now = Date.now();
 
-        // If cooldown met, send cropped region to API
         if (
           frameCounter.current >= coolDownFrames &&
           now - lastApiCallTimeRef.current > cooldownPeriod
@@ -144,12 +156,10 @@ function PlateScanner() {
           lastApiCallTimeRef.current = now;
           frameCounter.current = 0;
 
-          // Trim noise above/below the plate
           const trimTopBottom = 10;
           const adjustedHeight = Math.max(globalRect.height - trimTopBottom * 2, 1);
           const adjustedY = globalRect.y + trimTopBottom;
 
-          // Crop region to a temp canvas
           const cropCanvas = document.createElement("canvas");
           cropCanvas.width = globalRect.width;
           cropCanvas.height = adjustedHeight;
@@ -167,13 +177,12 @@ function PlateScanner() {
             adjustedHeight
           );
 
-          // Convert to base64 and send to backend
           const dataURL = cropCanvas.toDataURL("image/jpeg");
 
           axios
-            .post("https://parking-enforcement-server.onrender.com/api/detect-plate", 
-              { image: dataURL }, 
-              { headers: {"x-app-client": "lpr-client"} })
+            .post("https://parking-enforcement-server.onrender.com/api/detect-plate",
+              { image: dataURL },
+              { headers: { "x-app-client": "lpr-client" } })
             .then((res) => {
               const plate = res.data.plate;
               const isAuthorized = res.data.isAuthorized;
@@ -193,7 +202,6 @@ function PlateScanner() {
                 boxColorRef.current = isAuthorized ? "green" : "red";
               }
 
-              // Reset box color after 3s
               setTimeout(() => {
                 boxColorRef.current = "lightblue";
               }, 3000);
@@ -214,7 +222,6 @@ function PlateScanner() {
         frameCounter.current = 0;
       }
 
-      // Clean up OpenCV mats
       croppedMat.delete();
       gray.delete();
       edges.delete();
@@ -224,12 +231,9 @@ function PlateScanner() {
       console.error("processFrame error:", error);
     }
 
-    requestAnimationFrame(processFrame); // Loop
+    requestAnimationFrame(processFrame);
   };
 
-  /**
-   * Starts the camera with preferred rear-facing resolution
-   */
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -243,15 +247,12 @@ function PlateScanner() {
 
       videoRef.current.srcObject = stream;
       await videoRef.current.play();
-      setTimeout(() => processFrame(), 500); // Delay to let video stabilize
+      setTimeout(() => processFrame(), 500);
     } catch (err) {
       console.error("Error accessing camera", err);
     }
   };
 
-  /**
-   * Wait for OpenCV.js to be ready before starting camera
-   */
   const checkReady = () => {
     if (window.cv) {
       if (window.cv.Mat) {
@@ -271,20 +272,41 @@ function PlateScanner() {
       <IoClose className="top-right-exit close-icon" onClick={() => navigate("/list")} />
 
 
-      {/* Hidden video element used as camera feed */}
       <video ref={videoRef} style={{ display: "none" }} playsInline muted autoPlay />
 
-      {/* Canvas displays video with bounding box overlays */}
       <div className="canvas-wrapper">
-        <canvas ref={canvasRef} width={720} height={1280} className="scanner-canvas" />
+        <canvas
+          ref={canvasRef}
+          width={720}
+          height={1280}
+          className="scanner-canvas"
+          style={{ transform: `scale(${zoom})`, transition: "transform 0.3s ease" }}
+        />
         <PlateGuideBox width={GUIDE_WIDTH} height={GUIDE_HEIGHT} />
       </div>
 
-      {/* List of scanned plates (with validity) */}
+      {/* Zoom pill buttons with hold-to-zoom */}
+      <div className="zoom-pill">
+        <button
+          onMouseDown={() => startZooming("in")}
+          onMouseUp={stopZooming}
+          onMouseLeave={stopZooming}
+          onTouchStart={() => startZooming("in")}
+          onTouchEnd={stopZooming}
+        >+</button>
+        <button
+          onMouseDown={() => startZooming("out")}
+          onMouseUp={stopZooming}
+          onMouseLeave={stopZooming}
+          onTouchStart={() => startZooming("out")}
+          onTouchEnd={stopZooming}
+        >−</button>
+      </div>
+
       <PlateList plates={scannedPlates} />
 
       {/* Add new entry (future use?) */}
-      <button className="add-btn"  onClick={() => navigate("/report")}>+</button>
+      <button className="add-btn"   onClick={() => navigate("/report")}>+</button>
     </motion.div>
   );
 }
